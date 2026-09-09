@@ -5,7 +5,11 @@
             :root{
                 --primary-color:black;
                 --secondary-color:pink;
+                --text-size: 30px;
+                --text-color: white;
+                --multiplier:2;
             }
+            
             .container{
                 display: grid;
                 grid-template-columns: 1fr 1fr 1fr;
@@ -17,6 +21,12 @@
             .container>div{
                 font-size:30px;
                 outline:1px dashed grey;
+            }
+            p{
+                background-color: var(--primary-color);
+                color: var(--secondary-color1);
+                font-size: calc(var(--text-size)*var(--multiplier));
+                
             }
             
             .parent{
@@ -36,6 +46,7 @@
         </style>
     </head>
     <body>
+        <p> Learning CSS </p>
         <div class="container">
             <div class="parent">
                 <div class="child">Child</div>
