@@ -2,19 +2,22 @@
 <html>
     <head>
         <style>
-            div{
-                height:200px;
-                width:200px;
-                background-color: black;
-            }
-            @media(
-                min-width:500px){
-                    div{
-                        background-color: red;
-                    }
+            @layer special,base;
+            @layer base{
+                p{
+                    font-size:30px;
+                    color: red;
                 }
+            }
+            @layer special{
+                p{
+                    color:blue;
+                }
+            }
         </style>
     </head>
     <body>
-        <div></div>
+        <div>
+            <p> Specificity </p>
+        </div>
 </html>
