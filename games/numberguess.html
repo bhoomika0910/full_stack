@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guessing Game</title>
+</head>
+
+<body>
+
+    <h1>Guess the Number</h1>
+    <button id="start">Start Game</button>
+
+    <script>
+        document.getElementById("start").onclick = function() {
+
+            let number = Math.floor(Math.random() * 100) + 1;
+            let chances = 7;
+
+            while (chances > 0) {
+
+                let guess = Number(prompt("Enter your guess:"));
+
+                if (guess == number) {
+                    alert("Correct! You won!");
+                    return;
+                }
+
+                if (guess > number) {
+                    alert("Number too high!");
+                } else {
+                    alert("Number too low!");
+                }
+
+                chances--;
+
+                alert("Chances left: " + chances);
+            }
+
+            alert("Game Over! The number was " + number);
+        };
+    </script>
+
+</body>
+</html>
