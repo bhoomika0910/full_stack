@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS Quiz Arena</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            text-align: center;
+        }
+
+        .quiz {
+            width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 12px;
+            margin: 8px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .option {
+            display: block;
+            width: 90%;
+            margin: 10px auto;
+            background: #eee;
+        }
+
+        .correct {
+            background: lightcoral
+             !important;
+        }
+
+        .wrong {
+            background: lightgreen !important;
+        }
+
+        #next {
+            background: #333;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz">
+
+    <h1>JS Quiz Arena</h1>
+
+    <p id="progress">Q 1/5</p>
+    <p>Time: <span id="time">30</span>s</p>
+    <p>Score: <span id="score">0</span></p>
+
+    <h2 id="question"></h2>
+
+    <div id="options"></div>
+
+    <p id="explanation"></p>
+
+    <button id="next" onclick="nextQuestion()">Next</button>
+    <button onclick="restart()">Restart</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+
+let questions = [
+    {
+        q: "Which keyword declares a variable in JavaScript?",
+        options: ["var", "int", "string", "define"],
+        answer: 0,
+        explain: "var is used to declare a variable."
+    },
+    {
+        q: "Which symbol is used for comments in JavaScript?",
+        options: ["//", "#", "<!--", "**"],
+        answer: 0,
+        explain: "// is used for a single-line comment."
+    },
+    {
+        q: "Which method prints something in the console?",
+        options: ["print()", "console.log()", "display()", "show()"],
+        answer: 1,
+        explain: "console.log() prints data in the browser console."
+    },
+    {
+        q: "Which is NOT a JavaScript data type?",
+        options: ["String", "Number", "Boolean", "Character"],
+        answer: 3,
+        explain: "JavaScript does not have a separate Character data type."
+    },
+    {
+        q: "Which keyword creates a constant?",
+        options: ["let", "var", "const", "constant"],
+        answer: 2,
+        explain: "const is used to create a constant."
+    }
+];
+
+let current = 0;
+let score = 0;
+let time = 30;
+let timer;
+let wrong = [];
+
+function loadQuestion() {
+
+    clearInterval(timer);
+    time = 30;
+    document.getElementById("time").innerText = time;
+
+    document.getElementById("progress").innerText =
+        `Q ${current + 1}/${questions.length}`;
+
+    document.getElementById("score").innerText = score;
+
+    document.getElementById("question").innerText =
+        questions[current].q;
+
+    document.getElementById("explanation").innerText = "";
+
+    let box = document.getElementById("options");
+    box.innerHTML = "";
+
+    questions[current].options.forEach((option, i) => {
+
+        let button = document.createElement("button");
+
+        button.innerText = option;
+        button.className = "option";
+
+        button.onclick = () => checkAnswer(i, button);
+
+        box.appendChild(button);
+    });
+
+    timer = setInterval(countdown, 1000);
+}
+
+function countdown() {
+
+    time--;
+    document.getElementById("time").innerText = time;
+
+    if (time == 0) {
+        checkAnswer(-1);
+    }
+}
+
+function checkAnswer(selected, clicked) {
+
+    clearInterval(timer);
+
+    let q = questions[current];
+    let buttons = document.querySelectorAll(".option");
+
+    buttons.forEach(button => button.disabled = true);
+
+    if (selected == q.answer) {
+
+        clicked.classList.add("correct");
+        score++;
+
+    } else {
+
+        if (clicked)
+            clicked.classList.add("wrong");
+
+        wrong.push(current);
+    }
+
+    buttons[q.answer].classList.add("correct");
+
+    document.getElementById("score").innerText = score;
+
+    document.getElementById("explanation").innerText =
+        q.explain;
+}
+
+function nextQuestion() {
+
+    if (current < questions.length - 1) {
+
+        current++;
+        loadQuestion();
+
+    } else {
+
+        showResult();
+    }
+}
+
+function showResult() {
+
+    clearInterval(timer);
+
+    document.getElementById("question").innerText = "Quiz Completed!";
+
+    document.getElementById("options").innerHTML = "";
+
+    let rating =
+        score == 5 ? "Excellent!" :
+        score >= 3 ? "Good Job!" :
+        "Keep Practicing!";
+
+    document.getElementById("result").innerHTML =
+        `<h2>Score: ${score}/${questions.length}</h2>
+         <h3>${rating}</h3>
+         <h3>Wrong Answers: ${wrong.length}</h3>`;
+}
+
+function restart() {
+
+    current = 0;
+    score = 0;
+    wrong = [];
+
+    document.getElementById("result").innerHTML = "";
+
+    loadQuestion();
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
