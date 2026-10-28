@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Memory Card Game</title>
+
+    <style>
+        #game {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: lightblue;
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Memory Card Match</h1>
+
+    <p>Match all the pairs!</p>
+
+    <div id="game"></div>
+
+    <script>
+
+        let cards = [
+            "🍎", "🍎",
+            "🍌", "🍌",
+            "🍇", "🍇",
+            "🍊", "🍊",
+            "🍉", "🍉",
+            "🥝", "🥝",
+            "🍓", "🍓",
+            "🍍", "🍍"
+        ];
+
+        // Shuffle cards
+        cards.sort(() => Math.random() - 0.5);
+
+        let game = document.getElementById("game");
+
+        let firstCard = null;
+        let secondCard = null;
+        let lock = false;
+
+        // Create cards
+        for (let i = 0; i < 16; i++) {
+
+            let card = document.createElement("div");
+
+            card.classList.add("card");
+
+            card.innerText = "?";
+
+            card.onclick = function() {
+
+                if (lock == true) {
+                    return;
+                }
+
+                if (card.innerText != "?") {
+                    return;
+                }
+
+                card.innerText = cards[i];
+
+                if (firstCard == null) {
+
+                    firstCard = card;
+
+                } else {
+
+                    secondCard = card;
+                    lock = true;
+
+                    if (firstCard.innerText == secondCard.innerText) {
+
+                        firstCard = null;
+                        secondCard = null;
+                        lock = false;
+
+                    } else {
+
+                        setTimeout(function() {
+
+                            firstCard.innerText = "?";
+                            secondCard.innerText = "?";
+
+                            firstCard = null;
+                            secondCard = null;
+
+                            lock = false;
+
+                        }, 1000);
+                    }
+                }
+            };
+
+            game.appendChild(card);
+        }
+
+    </script>
+
+</body>
+</html>
