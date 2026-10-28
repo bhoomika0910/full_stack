@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dodge the Obstacles</title>
+
+    <style>
+        #game {
+            width: 300px;
+            height: 500px;
+            border: 2px solid black;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #player {
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            position: absolute;
+            bottom: 10px;
+            left: 125px;
+        }
+
+        .block {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Dodge the Obstacles</h1>
+
+    <p>Use Left and Right Arrow Keys</p>
+
+    <div id="game">
+        <div id="player"></div>
+    </div>
+
+    <h2 id="message"></h2>
+
+    <script>
+
+        let player = document.getElementById("player");
+        let game = document.getElementById("game");
+
+        let lane = 1;
+
+        // Move player
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key == "ArrowLeft" && lane > 0) {
+                lane--;
+            }
+
+            if (event.key == "ArrowRight" && lane < 2) {
+                lane++;
+            }
+
+            player.style.left = (lane * 100 + 25) + "px";
+
+        });
+
+
+        let speed = 5;
+
+
+        function createBlock() {
+
+            let block = document.createElement("div");
+
+            block.classList.add("block");
+
+            let randomLane = Math.floor(Math.random() * 3);
+
+            block.style.left = (randomLane * 100 + 25) + "px";
+
+            game.appendChild(block);
+
+
+            let fall = setInterval(function() {
+
+                let top = block.offsetTop;
+
+                block.style.top = (top + speed) + "px";
+
+
+                // Collision check
+                let playerBox = player.getBoundingClientRect();
+                let blockBox = block.getBoundingClientRect();
+
+
+                if (
+                    playerBox.left < blockBox.right &&
+                    playerBox.right > blockBox.left &&
+                    playerBox.top < blockBox.bottom &&
+                    playerBox.bottom > blockBox.top
+                ) {
+
+                    clearInterval(fall);
+
+                    document.getElementById("message").innerText =
+                        "Game Over!";
+
+                }
+
+
+                // Remove block when it leaves screen
+                if (top > 500) {
+
+                    clearInterval(fall);
+
+                    block.remove();
+                }
+
+            }, 50);
+        }
+
+
+        // Create blocks
+        setInterval(createBlock, 1000);
+
+
+        // Increase speed every 10 seconds
+        setInterval(function() {
+
+            speed = speed + 2;
+
+        }, 10000);
+
+    </script>
+
+</body>
+</html>
