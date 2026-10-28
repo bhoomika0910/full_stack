@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pong Game</title>
+
+    <style>
+        #game {
+            width: 500px;
+            height: 400px;
+            border: 2px solid black;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #ball {
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            left: 100px;
+            top: 100px;
+        }
+
+        #paddle {
+            width: 100px;
+            height: 15px;
+            background-color: blue;
+            position: absolute;
+            bottom: 20px;
+            left: 200px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Pong Game</h1>
+
+    <p>Use Left and Right Arrow Keys</p>
+
+    <p>Score: <span id="score">0</span></p>
+
+    <div id="game">
+
+        <div id="ball"></div>
+
+        <div id="paddle"></div>
+
+    </div>
+
+    <h2 id="message"></h2>
+
+
+    <script>
+
+        let ball = document.getElementById("ball");
+        let paddle = document.getElementById("paddle");
+
+        let x = 100;
+        let y = 100;
+
+        let dx = 3;
+        let dy = 3;
+
+        let paddleX = 200;
+
+        let score = 0;
+
+
+        // Move paddle
+
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key == "ArrowLeft") {
+                paddleX = paddleX - 20;
+            }
+
+            if (event.key == "ArrowRight") {
+                paddleX = paddleX + 20;
+            }
+
+            if (paddleX < 0) {
+                paddleX = 0;
+            }
+
+            if (paddleX > 400) {
+                paddleX = 400;
+            }
+
+            paddle.style.left = paddleX + "px";
+
+        });
+
+
+        // Game loop
+
+        let game = setInterval(function() {
+
+            x = x + dx;
+            y = y + dy;
+
+            ball.style.left = x + "px";
+            ball.style.top = y + "px";
+
+
+            // Left and right wall
+
+            if (x <= 0 || x >= 480) {
+                dx = -dx;
+            }
+
+
+            // Top wall
+
+            if (y <= 0) {
+                dy = -dy;
+            }
+
+
+            // Paddle hit
+
+            if (
+                y >= 350 &&
+                x >= paddleX &&
+                x <= paddleX + 100
+            ) {
+
+                dy = -dy;
+
+                score++;
+
+                document.getElementById("score").innerText = score;
+            }
+
+
+            // Ball missed
+
+            if (y > 400) {
+
+                clearInterval(game);
+
+                document.getElementById("message").innerText =
+                    "Game Over!";
+
+            }
+
+        }, 20);
+
+    </script>
+
+</body>
+</html>
