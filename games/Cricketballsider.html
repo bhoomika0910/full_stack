@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cricket Ball Slider</title>
+
+    <style>
+        #pitch {
+            width: 600px;
+            height: 100px;
+            border: 2px solid black;
+            position: relative;
+            background-color: lightgreen;
+        }
+
+        #ball {
+            width: 30px;
+            height: 30px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            top: 35px;
+            left: 0px;
+        }
+
+        #hitZone {
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+            position: absolute;
+            left: 250px;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Cricket Ball Slider</h1>
+
+    <p>Score: <span id="score">0</span></p>
+
+    <div id="pitch">
+
+        <div id="hitZone"></div>
+
+        <div id="ball"></div>
+
+    </div>
+
+    <br>
+
+    <button onclick="hit()">HIT</button>
+
+    <h2 id="message"></h2>
+
+
+    <script>
+
+        let ball = document.getElementById("ball");
+
+        let position = 0;
+
+        let score = 0;
+
+        let speed = Math.floor(Math.random() * 5) + 3;
+
+
+        // Move ball
+
+        let game = setInterval(function() {
+
+            position = position + speed;
+
+            ball.style.left = position + "px";
+
+
+            // Ball reached end
+
+            if (position > 570) {
+
+                clearInterval(game);
+
+                document.getElementById("message").innerText =
+                    "Miss! Game Over.";
+
+            }
+
+        }, 30);
+
+
+        // Hit button
+
+        function hit() {
+
+            // Hit zone is between 250 and 350
+
+            if (position >= 250 && position <= 350) {
+
+                score = score + 1;
+
+                document.getElementById("score").innerText =
+                    score;
+
+                document.getElementById("message").innerText =
+                    "Great Hit!";
+
+            }
+            else {
+
+                document.getElementById("message").innerText =
+                    "Miss!";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
