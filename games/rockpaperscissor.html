@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rock Paper Scissors</title>
+</head>
+
+<body>
+
+    <h1>Rock Paper Scissors</h1>
+
+    <button onclick="computerGame()">Play with Computer</button>
+    <button onclick="friendGame()">Play with Friend</button>
+
+    <script>
+
+        function computerGame() {
+
+            let player = prompt("Enter rock, paper or scissors:");
+
+            let random = Math.floor(Math.random() * 3);
+
+            let computer;
+
+            if (random == 0) {
+                computer = "rock";
+            }
+            else if (random == 1) {
+                computer = "paper";
+            }
+            else {
+                computer = "scissors";
+            }
+
+            alert("Computer chose: " + computer);
+
+            if (player == computer) {
+                alert("It's a Draw!");
+            }
+            else if (
+                (player == "rock" && computer == "scissors") ||
+                (player == "paper" && computer == "rock") ||
+                (player == "scissors" && computer == "paper")
+            ) {
+                alert("You Win!");
+            }
+            else {
+                alert("Computer Wins!");
+            }
+        }
+
+
+        function friendGame() {
+
+            let player1 = prompt("Player 1: Enter rock, paper or scissors:");
+
+            let player2 = prompt("Player 2: Enter rock, paper or scissors:");
+
+            if (player1 == player2) {
+                alert("It's a Draw!");
+            }
+            else if (
+                (player1 == "rock" && player2 == "scissors") ||
+                (player1 == "paper" && player2 == "rock") ||
+                (player1 == "scissors" && player2 == "paper")
+            ) {
+                alert("Player 1 Wins!");
+            }
+            else {
+                alert("Player 2 Wins!");
+            }
+        }
+
+    </script>
+
+</body>
+</html>
