@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Whack a Mole</title>
+
+    <style>
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 10px;
+        }
+
+        .cell {
+            height: 100px;
+            background-color: lightgray;
+        }
+
+        .active {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Whack-a-Mole</h1>
+
+    <p>Score: <span id="score">0</span></p>
+    <p>Time: <span id="time">30</span></p>
+
+    <div id="grid"></div>
+
+    <script>
+
+        let grid = document.getElementById("grid");
+        let score = 0;
+        let time = 30;
+        let activeCell;
+
+        // Create 9 cells
+        for (let i = 0; i < 9; i++) {
+            let cell = document.createElement("div");
+            cell.classList.add("cell");
+            grid.appendChild(cell);
+        }
+
+        let cells = document.querySelectorAll(".cell");
+
+        // Change random cell every 800 ms
+        let game = setInterval(function() {
+
+            // Remove old active cell
+            if (activeCell) {
+                activeCell.classList.remove("active");
+            }
+
+            // Choose random cell
+            let random = Math.floor(Math.random() * 9);
+
+            activeCell = cells[random];
+
+            activeCell.classList.add("active");
+
+        }, 800);
+
+
+        // Click on grid
+        grid.addEventListener("click", function(event) {
+
+            if (event.target.classList.contains("active")) {
+
+                score++;
+
+                document.getElementById("score").innerText = score;
+
+                event.target.classList.remove("active");
+            }
+
+        });
+
+
+        // 30 second timer
+        let timer = setInterval(function() {
+
+            time--;
+
+            document.getElementById("time").innerText = time;
+
+            if (time == 0) {
+
+                clearInterval(game);
+                clearInterval(timer);
+
+                alert("Game Over! Your score is " + score);
+            }
+
+        }, 1000);
+
+    </script>
+
+</body>
+</html>
